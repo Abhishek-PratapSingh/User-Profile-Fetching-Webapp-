@@ -1,10 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
 import {useSelector , useDispatch} from "react-redux"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState , CSSProperties } from 'react'
 import {displayAllUsers} from './redux/allUsers'
 import {displaySingleUser} from './redux/singleUser'
 import axios from 'axios';
+import BeatLoader from "react-spinners/BeatLoader";
+
+const override= {
+  display: "block",
+  margin: "0 auto",
+  marginTop : "6rem",
+  borderColor: "stateBlue"
+};
 
 function App() {
 
@@ -17,6 +25,9 @@ function App() {
 
   let obj =[]
   let profile={}
+  let [loading, setLoading] = useState(false);
+  let [color, setColor] = useState("#0000FF");
+
   const  fetchData = async () => {
     return await axios.get("https://reqres.in/api/users?page=2")
          .then((response) => 
@@ -39,6 +50,8 @@ function App() {
     }
     
     const fetchUser = async (id) => {
+
+
       return await axios.get(`https://reqres.in/api/users/${id}`)
            .then((response) => 
            // console.log(response.data) 
@@ -59,7 +72,7 @@ function App() {
 
     
     fetchData()
-    
+
     setTimeout(()=>{
       console.log(obj)
       dispatch(displayAllUsers(obj))
@@ -75,12 +88,18 @@ function App() {
   
  const displayUserDetails = e => {
       // console.log(e.target.id)
+      
+      setLoading(true)   
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000);
+      
       const id=e.target.id 
       fetchUser(id)
       setTimeout(()=>{
       dispatch(displaySingleUser(profile))
            
-      } , 100)
+      } , 200)
  }
 
  const {user} = useSelector((state) => state.singleUser)
@@ -95,14 +114,30 @@ function App() {
   return (
     <div className="App">
        
-       <h2  style={{"fontFamily" : "verdana" }}> Check for Any User By Clicking on Button</h2>
+       {/* <div style={{"backgroundColor": "azure" , "height":' 3rem' ,  }}> */}
+       <h2  style={{"fontFamily" : "verdana" , "textAlign" : "center" , "color":"darkBlue" , "paddingTop":"4px" , "fontSize":"2rem"}}> Check for Any User By Clicking on Button</h2>
+       {/* </div> */}
        <hr />         
        <br />
 
-       <div  style={{ "height" : "20rem" , "width" : "40rem" , "border" : "8px solid black" , "margin" : "auto", "backgroundColor" : "Azure"}} >
-          {user=='' ?  
+       <div  style={{"border" : "9px solid darkBlue" , "height" : "20rem" , "width" : "40rem" , "margin" : "auto", "backgroundColor" : "Azure"}} >
+       
+          {
+          loading ? 
+          
+          <BeatLoader
+          color={color}
+          loading={loading}
+          cssOverride={override}
+          size={40}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+         />  
+         :
+          
+          user=='' ?  
         
-            (   <div style={textStyle1} >{ "No User Choosen to Display" } </div>
+            (   <div style={textStyle1} >{ "Select a User to Display Profile " } </div>
             // , console.log('hhhh')  
             ) :
              
@@ -112,6 +147,7 @@ function App() {
                    <h2>User Profile</h2>
                   <div style={textStyle1}> { "Name: "   + user.first_name + ' ' + user.last_name} </div>
                   <div style={textStyle2}> {"Email: " + user.email} </div> 
+                 
                   <div style={textStyle2}> {"Id: " + user.id} </div> 
               </div>
             </div>
