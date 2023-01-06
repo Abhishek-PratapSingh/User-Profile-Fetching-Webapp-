@@ -14,6 +14,14 @@ const override= {
   borderColor: "stateBlue"
 };
 
+const override2= {
+  display: "block",
+  margin: "0 auto",
+  marginTop : "10rem",
+  borderColor: "stateBlue"
+};
+
+
 function App() {
 
   // const [display,setDisplay] = useState(0)
@@ -26,6 +34,7 @@ function App() {
   let obj =[]
   let profile={}
   let [loading, setLoading] = useState(false);
+  let [loading2, setLoading2] = useState(false);
   let [color, setColor] = useState("#0000FF");
 
   const  fetchData = async () => {
@@ -71,6 +80,12 @@ function App() {
   useEffect(()=>{
 
     
+    setLoading2(true)   
+    setTimeout(() => {
+      setLoading2(false)
+    }, 2000);
+    
+
     fetchData()
 
     setTimeout(()=>{
@@ -114,6 +129,23 @@ function App() {
   return (
     <div className="App">
        
+       {
+          loading2 ? 
+          <div>
+          <BeatLoader
+          color={color}
+          loading={loading2}
+          cssOverride={override2}
+          size={70}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+         />   
+         <div style={textStyle2} >{ "Fetching Users Data" } </div>
+         </div>
+         :
+          
+        <div>
+
        {/* <div style={{"backgroundColor": "azure" , "height":' 3rem' ,  }}> */}
        <h2  style={{"fontFamily" : "verdana" , "textAlign" : "center" , "color":"darkBlue" , "paddingTop":"4px" , "fontSize":"2rem"}}> Check for Any User By Clicking on Button</h2>
        {/* </div> */}
@@ -163,7 +195,9 @@ function App() {
           }
 
        </div>
-     
+       </div>
+        }
+
     </div> 
   );
 }
