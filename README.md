@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
 ## Demo:  [Link](https://userprofilecheck.netlify.app/)
+### Technologies Used: React, Redux, APIs, Javascript
 <br>
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
