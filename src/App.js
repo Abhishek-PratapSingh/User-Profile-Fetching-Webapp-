@@ -92,7 +92,7 @@ function App() {
       console.log(obj)
       dispatch(displayAllUsers(obj))
       
-    } , 1000)
+    } , 2000)
       // setDisplay(display+1);
       // fetchData()
       // console.log(obj)
@@ -113,8 +113,7 @@ function App() {
       fetchUser(id)
       setTimeout(()=>{
       dispatch(displaySingleUser(profile))
-           
-      } , 1000)
+      } , 2000)
  }
 
  const {user} = useSelector((state) => state.singleUser)
